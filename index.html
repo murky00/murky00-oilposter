@@ -75,17 +75,17 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
-    /* 🌟 核心主卡片：实体双层边框（彻底解决 html2canvas 错位穿透 BUG） */
+    /* 🌟 核心主卡片：实体双层边框 */
     .price-card-outer {
-      background: #e8bd70;               /* 外层金色底 */
-      border: 2px solid #a87226;          /* 最外层深金边框 */
+      background: #e8bd70;               
+      border: 2px solid #a87226;          
       border-radius: 20px;
-      padding: 3px;                      /* 稳定露出的 3px 金色夹层 */
+      padding: 3px;                      
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .price-card-inner {
       background: linear-gradient(180deg, #fffdf8 0%, #fff3de 45%, #ffe6c2 100%);
-      border: 1.5px solid #b58133;        /* 内层精致细金线 */
+      border: 1.5px solid #b58133;        
       border-radius: 16px;
       overflow: hidden;
     }
@@ -110,15 +110,21 @@
       position: relative; min-height: 66px;
     }
 
-    /* 字体与大号价格 */
-    .text-red-primary { color: #561715; font-weight: 900; line-height: 1.22; }
-    .oil-big-title { font-size: 20px; letter-spacing: 0.5px; }
-    .oil-title-normal { font-size: 15px; font-weight: 900; color: #111111; letter-spacing: -0.2px; }
+    /* 👉 统一的品名样式（黑体、粗重、多行整洁） */
+    .oil-title-normal { 
+      font-size: 15px; 
+      font-weight: 900; 
+      color: #111111; 
+      letter-spacing: -0.2px; 
+      line-height: 1.25;
+    }
+
+    /* 价格与说明角标 */
     .price-large { font-size: 29px; font-weight: 900; color: #561715; letter-spacing: -0.8px; line-height: 1; }
     .sub-note { font-size: 11px; font-weight: 700; color: #222222; margin-top: 4px; }
     .ship-tag { position: absolute; right: 12px; bottom: 3px; font-size: 10px; color: #111111; font-weight: 800; }
 
-    /* 🌟 底部条款卡片：同样使用实体双层边框 */
+    /* 🌟 底部条款卡片 */
     .terms-card-outer {
       background: #e8bd70;
       border: 2px solid #a87226;
@@ -136,11 +142,24 @@
       text-align: center;
     }
     .terms-header {
-      font-size: 14px; font-weight: 900; color: #111111; letter-spacing: 2px; margin-bottom: 5px;
+      font-size: 14px; font-weight: 900; color: #111111; letter-spacing: 2px; margin-bottom: 6px;
     }
+    
+    /* 条款多行容器 */
     .terms-content { 
-      font-size: 12.5px; color: #111111; line-height: 1.5; font-weight: 800; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      justify-content: center;
+      gap: 3px; /* 条款之间的微小间隙，清晰不挤 */
     }
+    .term-line {
+      font-size: 12.5px; 
+      color: #111111; 
+      line-height: 1.45; 
+      font-weight: 800;
+    }
+
     .terms-contact { 
       font-size: 18px; font-weight: 900; color: #111111; margin-top: 6px; letter-spacing: 0.5px;
     }
@@ -171,16 +190,18 @@
       <input type="file" id="bgUploader" accept="image/*">
     </div>
     <div class="form-row">
-      <label>大标题</label>
+      <label>顶部主标题</label>
       <input type="text" id="iptTitle" value="中亨石化报价单">
     </div>
     <div class="form-row">
       <label>胶囊日期</label>
       <input type="text" id="iptDate" value="10月16日">
     </div>
+
+    <!-- 第1项 -->
     <div class="form-row">
       <label>第一项品名</label>
-      <input type="text" id="iptName1" value="南通炜盛库\n0号柴油">
+      <input type="text" id="iptName1" value="南通焯盛库 0号柴油">
     </div>
     <div class="form-row">
       <label>第一项报价</label>
@@ -190,21 +211,53 @@
       <label>第一项备注</label>
       <input type="text" id="iptNote1" value="泰炼小密度0.816">
     </div>
+
+    <!-- 第2项 -->
+    <div class="form-row">
+      <label>第二项品名</label>
+      <input type="text" id="iptName2" value="南通焯盛库-10号柴油">
+    </div>
     <div class="form-row">
       <label>第二项价格</label>
       <input type="text" id="iptPrice2" value="9600元">
     </div>
+
+    <!-- 第3项 -->
     <div class="form-row">
-      <label>92号汽油价格</label>
+      <label>第三项品名</label>
+      <input type="text" id="iptName3" value="德桥92号汽油">
+    </div>
+    <div class="form-row">
+      <label>第三项价格</label>
       <input type="text" id="iptPrice3" value="10150/吨">
     </div>
+
+    <!-- 第4项 -->
     <div class="form-row">
-      <label>95号汽油价格</label>
-      <input type="text" id="iptPrice4" value="10250/吨">
+      <label>第四项品名</label>
+      <input type="text" id="iptName4" value="德桥95号汽油">
     </div>
     <div class="form-row">
-      <label>交易条款</label>
-      <input type="text" id="iptTerms" value="以上报价船单可以平仓，可以送到">
+      <label>第四项价格</label>
+      <input type="text" id="iptPrice4" value="10250/吨">
+    </div>
+
+    <!-- 底部条款配置（独立3条） -->
+    <div class="form-row">
+      <label>条款栏标题</label>
+      <input type="text" id="iptTermsHeader" value="—— 交易条款 ——">
+    </div>
+    <div class="form-row">
+      <label>条款 1 (必填)</label>
+      <input type="text" id="iptTerm1" value="以上报价船单可以平仓，可以送到">
+    </div>
+    <div class="form-row">
+      <label>条款 2 (选填)</label>
+      <input type="text" id="iptTerm2" value="" placeholder="留空则海报不显示此行">
+    </div>
+    <div class="form-row">
+      <label>条款 3 (选填)</label>
+      <input type="text" id="iptTerm3" value="" placeholder="留空则海报不显示此行">
     </div>
     <div class="form-row">
       <label>联系人电话</label>
@@ -228,10 +281,10 @@
       <!-- 核心金色双层实体主卡片 -->
       <div class="price-card-outer">
         <div class="price-card-inner">
-          <!-- 第 1 行 -->
+          <!-- 第 1 行：品名样式现已与下方完全统一 -->
           <div class="table-row">
-            <div class="col-left text-red-primary">
-              <div class="oil-big-title" id="viewName1">南通炜盛库<br>0号柴油</div>
+            <div class="col-left">
+              <div class="oil-title-normal" id="viewName1">南通焯盛库 0号柴油</div>
             </div>
             <div class="col-right">
               <div class="price-large" id="viewPrice1" style="font-size:31px;">面议</div>
@@ -242,7 +295,7 @@
           <!-- 第 2 行 -->
           <div class="table-row">
             <div class="col-left">
-              <div class="oil-title-normal">南通炜盛库-10号柴油</div>
+              <div class="oil-title-normal" id="viewName2">南通焯盛库-10号柴油</div>
             </div>
             <div class="col-right">
               <div class="price-large" id="viewPrice2">9600元</div>
@@ -253,7 +306,7 @@
           <!-- 第 3 行 -->
           <div class="table-row">
             <div class="col-left">
-              <div class="oil-title-normal">德桥92号汽油</div>
+              <div class="oil-title-normal" id="viewName3">德桥92号汽油</div>
             </div>
             <div class="col-right">
               <div class="price-large" id="viewPrice3">10150/吨</div>
@@ -264,7 +317,7 @@
           <!-- 第 4 行 -->
           <div class="table-row">
             <div class="col-left">
-              <div class="oil-title-normal">德桥95号汽油</div>
+              <div class="oil-title-normal" id="viewName4">德桥95号汽油</div>
             </div>
             <div class="col-right">
               <div class="price-large" id="viewPrice4">10250/吨</div>
@@ -274,11 +327,16 @@
         </div>
       </div>
 
-      <!-- 底部条款卡片（实体双层框） -->
+      <!-- 底部条款卡片 -->
       <div class="terms-card-outer">
         <div class="terms-card-inner">
-          <div class="terms-header">—— 交易条款 ——</div>
-          <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
+          <div class="terms-header" id="viewTermsHeader">—— 交易条款 ——</div>
+          <!-- 3条独立条款容器 -->
+          <div class="terms-content">
+            <div class="term-line" id="viewTerm1">以上报价船单可以平仓，可以送到</div>
+            <div class="term-line" id="viewTerm2" style="display:none;"></div>
+            <div class="term-line" id="viewTerm3" style="display:none;"></div>
+          </div>
           <div class="terms-contact" id="viewContact">联系人: 曹先生 13611945990</div>
         </div>
       </div>
@@ -322,13 +380,39 @@
     linkInput('iptName1', 'viewName1', true);
     linkInput('iptPrice1', 'viewPrice1');
     linkInput('iptNote1', 'viewNote1');
+
+    linkInput('iptName2', 'viewName2');
     linkInput('iptPrice2', 'viewPrice2');
+    linkInput('iptName3', 'viewName3');
     linkInput('iptPrice3', 'viewPrice3');
+    linkInput('iptName4', 'viewName4');
     linkInput('iptPrice4', 'viewPrice4');
-    linkInput('iptTerms', 'viewTerms');
+
+    linkInput('iptTermsHeader', 'viewTermsHeader');
     linkInput('iptContact', 'viewContact');
 
-    // 3. 高清导出图片（3倍超采样保证绝对清晰，零边框Bug）
+    // 👉 条款 1、2、3 动态自适应绑定（留空不显示）
+    const bindTerm = (iptId, viewId) => {
+      const input = document.getElementById(iptId);
+      const target = document.getElementById(viewId);
+      const update = () => {
+        const text = input.value.trim();
+        if (text) {
+          target.innerText = text;
+          target.style.display = 'block';
+        } else {
+          target.innerText = '';
+          target.style.display = 'none';
+        }
+      };
+      input.addEventListener('input', update);
+      update(); // 初始化执行一次
+    };
+    bindTerm('iptTerm1', 'viewTerm1');
+    bindTerm('iptTerm2', 'viewTerm2');
+    bindTerm('iptTerm3', 'viewTerm3');
+
+    // 3. 高清导出图片
     function exportPoster() {
       const target = document.getElementById('posterCanvas');
       html2canvas(target, {
@@ -340,7 +424,7 @@
         document.getElementById('exportImg').src = canvas.toDataURL('image/png');
         document.getElementById('previewModal').style.display = 'flex';
       }).catch(err => {
-        alert('导出失败，请重试');
+        alert('导出失败：' + err.message);
         console.error(err);
       });
     }
