@@ -34,7 +34,7 @@
     /* 海报居中视窗 */
     .poster-box { display: flex; justify-content: center; margin-bottom: 30px; }
 
-    /* 海报整体（375x812 真实高挑全面屏比例） */
+    /* 海报整体（375x812 真实全面屏比例） */
     #posterCanvas {
       width: 375px; height: 812px; flex-shrink: 0; position: relative;
       background-size: cover; background-position: center bottom; background-repeat: no-repeat;
@@ -44,108 +44,118 @@
       background-image: url('bg.jpg');
     }
 
-    /* 顶部标题区（向下靠拢中间模块） */
+    /* 顶部标题区（对齐原图紧凑比例） */
     .poster-header { 
       text-align: center; 
-      margin-top: 40px;
-      margin-bottom: 14px;
+      margin-top: 36px;
+      margin-bottom: 10px;
     }
-    /* 👉 1. 标题改为高贵金色字体，带微光立体阴影 */
+
+    /* 🌟 大标题：璀璨发光白金色大字 */
     .main-title {
-      font-size: 25px; 
+      font-size: 28px; 
       font-weight: 900; 
+      color: #ffffff; 
       letter-spacing: 2px;
-      color: #fff9e6; 
-
       text-shadow: 
-      0 0 5px #ffd700,                        /* 近层：纯正明亮黄金光 */
-      0 0 12px #ffa500,                       /* 中层：温润暖橙金辉 */
-      0 0 25px rgba(255, 165, 0, 0.9),        /* 远层：浓郁金色光晕扩散 */
-      0 0 40px rgba(255, 140, 0, 0.7),        /* 氛围：金色能量弥散光 */
-      0 3px 6px rgba(0, 0, 0, 0.9),           /* 立体感：深色物理阴影，保证文字边缘刀锋般清晰 */
-      0 6px 14px rgba(0, 0, 0, 0.7);
-    }
-    .sub-company-tag {
-      display: inline-block; margin-top: 6px;
-      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px);
-      color: #ffffff; font-size: 12px; font-weight: 600;
-      padding: 3px 12px; border-radius: 20px; letter-spacing: 0.5px;
+        0 0 6px #ffcc00, 
+        0 0 14px #ff9900, 
+        0 0 25px rgba(255, 153, 0, 0.85),
+        0 2px 4px rgba(0, 0, 0, 0.95);
     }
 
-    /* 核心金色卡片 */
+    /* 🌟 副标题：黑金椭圆胶囊日期框 */
+    .date-badge {
+      display: inline-block; 
+      margin-top: 6px;
+      background: #1f0b06;
+      border: 1.5px solid #dca85b;
+      color: #ffffff; 
+      font-size: 13px; 
+      font-weight: 800;
+      padding: 2px 18px; 
+      border-radius: 20px; 
+      letter-spacing: 1px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+
+    /* 🌟 核心主卡片：极致双层金色镶边工艺 */
     .price-card {
       background: #ffffff;
-      border-radius: 20px;
-      border: 3px solid #dfb36c; /* 金色边框 */
-      outline: 3px solid rgba(235, 196, 127, 0.5); /* 外层微光 */
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      border-radius: 18px;
+      border: 2.5px solid #b58133;
+      box-shadow: 
+        0 0 0 2px #ffffff inset,         /* 内嵌白色过渡 */
+        0 0 0 3.5px #dca85b inset,       /* 内嵌细金边 */
+        0 8px 24px rgba(0, 0, 0, 0.45);  /* 悬浮阴影 */
       overflow: hidden;
-      margin-bottom: 0;
+      padding: 4px;
     }
+
+    /* 表格行布局 */
     .table-row {
-      display: flex; align-items: center; min-height: 64px;
-      border-bottom: 1.5px solid #222222;
+      display: flex; align-items: center; min-height: 66px;
+      border-bottom: 1px solid #733c16; /* 深红褐色精致分割线 */
     }
     .table-row:last-child { border-bottom: none; }
 
     /* 表格左列 */
     .col-left {
-      width: 50%; padding: 6px 10px; text-align: center;
+      width: 50%; padding: 6px 8px; text-align: center;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      border-right: 1.5px solid #222222; min-height: inherit;
+      border-right: 1px solid #733c16; min-height: 66px;
     }
     /* 表格右列 */
     .col-right {
       width: 50%; padding: 6px 12px; text-align: center;
       display: flex; flex-direction: column; justify-content: center; align-items: center;
-      position: relative; min-height: inherit;
+      position: relative; min-height: 66px;
     }
 
-    /* 首行特殊深红粗体 */
-    .text-red-primary { color: #581414; font-weight: 900; line-height: 1.25; }
-    .oil-big-title { font-size: 19px; }
-    .oil-title-normal { font-size: 14px; font-weight: 800; color: #111; }
+    /* 第一行首推品类（深褐酒红超粗体） */
+    .text-red-primary { color: #561715; font-weight: 900; line-height: 1.22; }
+    .oil-big-title { font-size: 20px; letter-spacing: 0.5px; }
+    .oil-title-normal { font-size: 15px; font-weight: 900; color: #111111; letter-spacing: -0.2px; }
     
-    /* 大号价格 */
-    .price-large { font-size: 26px; font-weight: 900; color: #581414; letter-spacing: -0.5px; }
+    /* 大号价格数字 */
+    .price-large { font-size: 29px; font-weight: 900; color: #561715; letter-spacing: -0.8px; line-height: 1; }
     
-    /* 辅助角标小字 */
-    .sub-note { font-size: 10px; color: #333; margin-top: 2px; }
-    .ship-tag { position: absolute; right: 14px; bottom: 4px; font-size: 10px; color: #111; font-weight: 700; }
+    /* 辅助说明角标 */
+    .sub-note { font-size: 11px; font-weight: 700; color: #222222; margin-top: 4px; }
+    .ship-tag { position: absolute; right: 12px; bottom: 3px; font-size: 10px; color: #111111; font-weight: 800; }
 
-    /* 底部条款卡片（金色边框 + 与主模块一致的字体层次） */
+    /* 🌟 底部条款卡片（同样匹配双层金色镶边） */
     .terms-card {
       background: #ffffff; 
-      border-radius: 14px; 
-      padding: 14px 16px;
+      border-radius: 16px; 
+      padding: 12px 14px;
       text-align: center; 
-      border: 2px solid #dfb36c;
-      outline: 2px solid rgba(235, 196, 127, 0.45);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
-      margin-top: 14px;
-      margin-bottom: 10px;
+      border: 2px solid #b58133;
+      box-shadow: 
+        0 0 0 1.5px #ffffff inset,
+        0 0 0 3px #dca85b inset,
+        0 6px 18px rgba(0, 0, 0, 0.35);
+      margin-top: 12px;
+      margin-bottom: 6px;
     }
-    /* 👉 2. 标题呼应主模块深酒红风格 */
     .terms-header {
       font-size: 14px; 
       font-weight: 900; 
-      color: #581414; 
+      color: #111111; 
       letter-spacing: 2px; 
-      margin-bottom: 7px;
+      margin-bottom: 5px;
     }
-    /* 👉 3. 条款内容加粗，与主模块黑体保持一致 */
     .terms-content { 
-      font-size: 13px; 
-      color: #111; 
-      line-height: 1.6; 
+      font-size: 12.5px; 
+      color: #111111; 
+      line-height: 1.5; 
       font-weight: 800; 
     }
-    /* 👉 4. 电话号码放大至 17px，超粗体深红突出 */
     .terms-contact { 
-      font-size: 17px; 
+      font-size: 15px; 
       font-weight: 900; 
-      color: #581414; 
-      margin-top: 8px; 
+      color: #111111; 
+      margin-top: 6px; 
       letter-spacing: 0.5px;
     }
 
@@ -175,12 +185,12 @@
       <input type="file" id="bgUploader" accept="image/*">
     </div>
     <div class="form-row">
-      <label>海报大标题</label>
-      <input type="text" id="iptTitle" value="10月16日中亨石化报价单">
+      <label>大标题</label>
+      <input type="text" id="iptTitle" value="中亨石化报价单">
     </div>
     <div class="form-row">
-      <label>副标题公司</label>
-      <input type="text" id="iptCompany" value="中亨（浙江）石油化工有限公司">
+      <label>胶囊日期</label>
+      <input type="text" id="iptDate" value="10月16日">
     </div>
     <div class="form-row">
       <label>第一项品名</label>
@@ -192,19 +202,19 @@
     </div>
     <div class="form-row">
       <label>第一项备注</label>
-      <input type="text" id="iptNote1" value="泰炼小密度 0.816">
+      <input type="text" id="iptNote1" value="泰炼小密度0.816">
     </div>
     <div class="form-row">
       <label>第二项价格</label>
-      <input type="text" id="iptPrice2" value="9650元">
+      <input type="text" id="iptPrice2" value="9600元">
     </div>
     <div class="form-row">
       <label>92号汽油价格</label>
-      <input type="text" id="iptPrice3" value="10070/吨">
+      <input type="text" id="iptPrice3" value="10150/吨">
     </div>
     <div class="form-row">
       <label>95号汽油价格</label>
-      <input type="text" id="iptPrice4" value="10170/吨">
+      <input type="text" id="iptPrice4" value="10250/吨">
     </div>
     <div class="form-row">
       <label>交易条款</label>
@@ -221,15 +231,15 @@
   <div class="poster-box">
     <div id="posterCanvas">
       
-      <!-- 顶部金色标题 -->
+      <!-- 顶部标题与胶囊日期 -->
       <div class="poster-header">
-        <div class="main-title" id="viewTitle">10月16日中亨石化报价单</div>
+        <div class="main-title" id="viewTitle">中亨石化报价单</div>
         <div>
-          <div class="sub-company-tag" id="viewCompany">中亨（浙江）石油化工有限公司</div>
+          <div class="date-badge" id="viewDate">10月16日</div>
         </div>
       </div>
 
-      <!-- 核心金色报价卡 -->
+      <!-- 核心金色双边框主卡片 -->
       <div class="price-card">
         <!-- 第 1 行 -->
         <div class="table-row">
@@ -237,8 +247,8 @@
             <div class="oil-big-title" id="viewName1">南通炜盛库<br>0号柴油</div>
           </div>
           <div class="col-right">
-            <div class="price-large" id="viewPrice1" style="font-size:28px;">面议</div>
-            <div class="sub-note" id="viewNote1">泰炼小密度 0.816</div>
+            <div class="price-large" id="viewPrice1" style="font-size:31px;">面议</div>
+            <div class="sub-note" id="viewNote1">泰炼小密度0.816</div>
           </div>
         </div>
 
@@ -248,7 +258,7 @@
             <div class="oil-title-normal">南通炜盛库-10号柴油</div>
           </div>
           <div class="col-right">
-            <div class="price-large" id="viewPrice2">9650元</div>
+            <div class="price-large" id="viewPrice2">9600元</div>
             <div class="ship-tag">船单</div>
           </div>
         </div>
@@ -259,7 +269,7 @@
             <div class="oil-title-normal">德桥92号汽油</div>
           </div>
           <div class="col-right">
-            <div class="price-large" id="viewPrice3">10070/吨</div>
+            <div class="price-large" id="viewPrice3">10150/吨</div>
             <div class="ship-tag">船单</div>
           </div>
         </div>
@@ -270,13 +280,13 @@
             <div class="oil-title-normal">德桥95号汽油</div>
           </div>
           <div class="col-right">
-            <div class="price-large" id="viewPrice4">10170/吨</div>
+            <div class="price-large" id="viewPrice4">10250/吨</div>
             <div class="ship-tag">船单</div>
           </div>
         </div>
       </div>
 
-      <!-- 底部条款卡（带边框，与主模块风格统一，电话放大） -->
+      <!-- 底部条款卡片 -->
       <div class="terms-card">
         <div class="terms-header">—— 交易条款 ——</div>
         <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
@@ -286,7 +296,7 @@
     </div>
   </div>
 
-  <!-- 输出图片弹窗（供长按保存） -->
+  <!-- 输出图片弹窗（长按保存） -->
   <div id="previewModal">
     <img id="exportImg" src="" alt="海报生成结果">
     <div class="modal-tip">💡 长按上方图片即可「保存到手机相册」或转发</div>
@@ -318,7 +328,7 @@
       });
     };
     linkInput('iptTitle', 'viewTitle');
-    linkInput('iptCompany', 'viewCompany');
+    linkInput('iptDate', 'viewDate');
     linkInput('iptName1', 'viewName1', true);
     linkInput('iptPrice1', 'viewPrice1');
     linkInput('iptNote1', 'viewNote1');
