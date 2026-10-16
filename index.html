@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>石化报价海报生成器</title>
+  <title>报价海报生成器</title>
   <!-- 引入纯前端高清截图库 -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
@@ -38,20 +38,36 @@
     #posterCanvas {
       width: 375px; height: 812px; flex-shrink: 0; position: relative;
       background-size: cover; background-position: center bottom; background-repeat: no-repeat;
-      overflow: hidden; padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between;
-      /* 默认固定油库背景（Unsplash 真实工业油罐全景） */
-      background-image: url('https://plus.unsplash.com/premium_photo-1661962394330-d7941530479e?q=80&w=1200&auto=format&fit=crop');
+      overflow: hidden; padding: 20px 14px; display: flex; flex-direction: column;
+      justify-content: center; 
+      /* 优先读取同目录下的 bg.jpg */
+      background-image: url('bg.jpg');
     }
 
-    /* 顶部标题区 */
-    .poster-header { text-align: center; margin-top: 140px; }
+    /* 顶部标题区（向下靠拢中间模块） */
+    .poster-header { 
+      text-align: center; 
+      margin-top: 40px;
+      margin-bottom: 14px;
+    }
+    /* 👉 1. 标题改为高贵金色字体，带微光立体阴影 */
     .main-title {
-      font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 1px;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0,0,0,0.5);
+      font-size: 25px; 
+      font-weight: 900; 
+      letter-spacing: 2px;
+      color: #fff9e6; 
+
+      text-shadow: 
+      0 0 5px #ffd700,                        /* 近层：纯正明亮黄金光 */
+      0 0 12px #ffa500,                       /* 中层：温润暖橙金辉 */
+      0 0 25px rgba(255, 165, 0, 0.9),        /* 远层：浓郁金色光晕扩散 */
+      0 0 40px rgba(255, 140, 0, 0.7),        /* 氛围：金色能量弥散光 */
+      0 3px 6px rgba(0, 0, 0, 0.9),           /* 立体感：深色物理阴影，保证文字边缘刀锋般清晰 */
+      0 6px 14px rgba(0, 0, 0, 0.7);
     }
     .sub-company-tag {
       display: inline-block; margin-top: 6px;
-      background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(2px);
+      background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px);
       color: #ffffff; font-size: 12px; font-weight: 600;
       padding: 3px 12px; border-radius: 20px; letter-spacing: 0.5px;
     }
@@ -63,7 +79,8 @@
       border: 3px solid #dfb36c; /* 金色边框 */
       outline: 3px solid rgba(235, 196, 127, 0.5); /* 外层微光 */
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-      overflow: hidden; margin-top: 10px;
+      overflow: hidden;
+      margin-bottom: 0;
     }
     .table-row {
       display: flex; align-items: center; min-height: 64px;
@@ -96,17 +113,41 @@
     .sub-note { font-size: 10px; color: #333; margin-top: 2px; }
     .ship-tag { position: absolute; right: 14px; bottom: 4px; font-size: 10px; color: #111; font-weight: 700; }
 
-    /* 底部条款卡片 */
+    /* 底部条款卡片（金色边框 + 与主模块一致的字体层次） */
     .terms-card {
-      background: #ffffff; border-radius: 12px; padding: 12px 14px;
-      text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-      margin-bottom: 25px;
+      background: #ffffff; 
+      border-radius: 14px; 
+      padding: 14px 16px;
+      text-align: center; 
+      border: 2px solid #dfb36c;
+      outline: 2px solid rgba(235, 196, 127, 0.45);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      margin-top: 14px;
+      margin-bottom: 10px;
     }
+    /* 👉 2. 标题呼应主模块深酒红风格 */
     .terms-header {
-      font-size: 13px; font-weight: 800; color: #111; letter-spacing: 2px; margin-bottom: 6px;
+      font-size: 14px; 
+      font-weight: 900; 
+      color: #581414; 
+      letter-spacing: 2px; 
+      margin-bottom: 7px;
     }
-    .terms-content { font-size: 12px; color: #222; line-height: 1.5; font-weight: 600; }
-    .terms-contact { font-size: 13px; font-weight: 800; color: #111; margin-top: 6px; }
+    /* 👉 3. 条款内容加粗，与主模块黑体保持一致 */
+    .terms-content { 
+      font-size: 13px; 
+      color: #111; 
+      line-height: 1.6; 
+      font-weight: 800; 
+    }
+    /* 👉 4. 电话号码放大至 17px，超粗体深红突出 */
+    .terms-contact { 
+      font-size: 17px; 
+      font-weight: 900; 
+      color: #581414; 
+      margin-top: 8px; 
+      letter-spacing: 0.5px;
+    }
 
     /* 弹出图片预览遮罩 */
     #previewModal {
@@ -180,7 +221,7 @@
   <div class="poster-box">
     <div id="posterCanvas">
       
-      <!-- 顶部标题 -->
+      <!-- 顶部金色标题 -->
       <div class="poster-header">
         <div class="main-title" id="viewTitle">10月16日中亨石化报价单</div>
         <div>
@@ -235,7 +276,7 @@
         </div>
       </div>
 
-      <!-- 底部条款卡 -->
+      <!-- 底部条款卡（带边框，与主模块风格统一，电话放大） -->
       <div class="terms-card">
         <div class="terms-header">—— 交易条款 ——</div>
         <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
