@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>石化报价海报生成器</title>
+  <!-- 引入纯前端高清截图库 -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: #eef2f6; padding: 12px; color: #333;
+    }
+
+    /* 移动端操作表单区 */
+    .editor-card {
+      background: #ffffff; border-radius: 12px; padding: 14px;
+      margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .editor-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; color: #1a1a1a; }
+    .form-row { display: flex; align-items: center; margin-bottom: 9px; }
+    .form-row label { width: 95px; font-size: 13px; color: #555; flex-shrink: 0; }
+    .form-row input, .form-row textarea {
+      flex: 1; padding: 7px 10px; border: 1px solid #dcdfe6; border-radius: 6px; font-size: 13px;
+    }
+    .btn-generate {
+      width: 100%; padding: 12px; background: linear-gradient(135deg, #1890ff, #096dd9);
+      color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold;
+      cursor: pointer; margin-top: 6px; box-shadow: 0 3px 8px rgba(24,144,255,0.3);
+    }
+    .btn-generate:active { transform: scale(0.98); }
+
+    /* 海报居中视窗 */
+    .poster-box { display: flex; justify-content: center; margin-bottom: 30px; }
+
+    /* 海报整体（375x812 真实高挑全面屏比例） */
+    #posterCanvas {
+      width: 375px; height: 812px; flex-shrink: 0; position: relative;
+      background-size: cover; background-position: center bottom; background-repeat: no-repeat;
+      overflow: hidden; padding: 20px 14px; display: flex; flex-direction: column; justify-content: space-between;
+      /* 默认固定油库背景（Unsplash 真实工业油罐全景） */
+      background-image: url('https://plus.unsplash.com/premium_photo-1661962394330-d7941530479e?q=80&w=1200&auto=format&fit=crop');
+    }
+
+    /* 顶部标题区 */
+    .poster-header { text-align: center; margin-top: 140px; }
+    .main-title {
+      font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 1px;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0,0,0,0.5);
+    }
+    .sub-company-tag {
+      display: inline-block; margin-top: 6px;
+      background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(2px);
+      color: #ffffff; font-size: 12px; font-weight: 600;
+      padding: 3px 12px; border-radius: 20px; letter-spacing: 0.5px;
+    }
+
+    /* 核心金色卡片 */
+    .price-card {
+      background: #ffffff;
+      border-radius: 20px;
+      border: 3px solid #dfb36c; /* 金色边框 */
+      outline: 3px solid rgba(235, 196, 127, 0.5); /* 外层微光 */
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      overflow: hidden; margin-top: 10px;
+    }
+    .table-row {
+      display: flex; align-items: center; min-height: 64px;
+      border-bottom: 1.5px solid #222222;
+    }
+    .table-row:last-child { border-bottom: none; }
+
+    /* 表格左列 */
+    .col-left {
+      width: 50%; padding: 6px 10px; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      border-right: 1.5px solid #222222; min-height: inherit;
+    }
+    /* 表格右列 */
+    .col-right {
+      width: 50%; padding: 6px 12px; text-align: center;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative; min-height: inherit;
+    }
+
+    /* 首行特殊深红粗体 */
+    .text-red-primary { color: #581414; font-weight: 900; line-height: 1.25; }
+    .oil-big-title { font-size: 19px; }
+    .oil-title-normal { font-size: 14px; font-weight: 800; color: #111; }
+    
+    /* 大号价格 */
+    .price-large { font-size: 26px; font-weight: 900; color: #581414; letter-spacing: -0.5px; }
+    
+    /* 辅助角标小字 */
+    .sub-note { font-size: 10px; color: #333; margin-top: 2px; }
+    .ship-tag { position: absolute; right: 14px; bottom: 4px; font-size: 10px; color: #111; font-weight: 700; }
+
+    /* 底部条款卡片 */
+    .terms-card {
+      background: #ffffff; border-radius: 12px; padding: 12px 14px;
+      text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      margin-bottom: 25px;
+    }
+    .terms-header {
+      font-size: 13px; font-weight: 800; color: #111; letter-spacing: 2px; margin-bottom: 6px;
+    }
+    .terms-content { font-size: 12px; color: #222; line-height: 1.5; font-weight: 600; }
+    .terms-contact { font-size: 13px; font-weight: 800; color: #111; margin-top: 6px; }
+
+    /* 弹出图片预览遮罩 */
+    #previewModal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.88); z-index: 9999; flex-direction: column;
+      align-items: center; justify-content: center; padding: 15px;
+    }
+    #previewModal img {
+      max-width: 90%; max-height: 80vh; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+    .modal-tip { color: #fff; font-size: 13px; margin-top: 12px; }
+    .btn-close-modal {
+      margin-top: 12px; padding: 6px 22px; background: #fff; border: none;
+      border-radius: 20px; font-size: 13px; font-weight: bold; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 控制与修改面板 -->
+  <div class="editor-card">
+    <div class="editor-title">⚙️ 运营快捷修改面板</div>
+    <div class="form-row">
+      <label>背景图片</label>
+      <input type="file" id="bgUploader" accept="image/*">
+    </div>
+    <div class="form-row">
+      <label>海报大标题</label>
+      <input type="text" id="iptTitle" value="10月16日中亨石化报价单">
+    </div>
+    <div class="form-row">
+      <label>副标题公司</label>
+      <input type="text" id="iptCompany" value="中亨（浙江）石油化工有限公司">
+    </div>
+    <div class="form-row">
+      <label>第一项品名</label>
+      <input type="text" id="iptName1" value="南通炜盛库\n0号柴油">
+    </div>
+    <div class="form-row">
+      <label>第一项报价</label>
+      <input type="text" id="iptPrice1" value="面议">
+    </div>
+    <div class="form-row">
+      <label>第一项备注</label>
+      <input type="text" id="iptNote1" value="泰炼小密度 0.816">
+    </div>
+    <div class="form-row">
+      <label>第二项价格</label>
+      <input type="text" id="iptPrice2" value="9650元">
+    </div>
+    <div class="form-row">
+      <label>92号汽油价格</label>
+      <input type="text" id="iptPrice3" value="10070/吨">
+    </div>
+    <div class="form-row">
+      <label>95号汽油价格</label>
+      <input type="text" id="iptPrice4" value="10170/吨">
+    </div>
+    <div class="form-row">
+      <label>交易条款</label>
+      <input type="text" id="iptTerms" value="以上报价船单可以平仓，可以送到">
+    </div>
+    <div class="form-row">
+      <label>联系人电话</label>
+      <input type="text" id="iptContact" value="联系人: 曹先生 13611945990">
+    </div>
+    <button class="btn-generate" onclick="exportPoster()">📸 生成发布高清海报</button>
+  </div>
+
+  <!-- 海报排版渲染区域 -->
+  <div class="poster-box">
+    <div id="posterCanvas">
+      
+      <!-- 顶部标题 -->
+      <div class="poster-header">
+        <div class="main-title" id="viewTitle">10月16日中亨石化报价单</div>
+        <div>
+          <div class="sub-company-tag" id="viewCompany">中亨（浙江）石油化工有限公司</div>
+        </div>
+      </div>
+
+      <!-- 核心金色报价卡 -->
+      <div class="price-card">
+        <!-- 第 1 行 -->
+        <div class="table-row">
+          <div class="col-left text-red-primary">
+            <div class="oil-big-title" id="viewName1">南通炜盛库<br>0号柴油</div>
+          </div>
+          <div class="col-right">
+            <div class="price-large" id="viewPrice1" style="font-size:28px;">面议</div>
+            <div class="sub-note" id="viewNote1">泰炼小密度 0.816</div>
+          </div>
+        </div>
+
+        <!-- 第 2 行 -->
+        <div class="table-row">
+          <div class="col-left">
+            <div class="oil-title-normal">南通炜盛库-10号柴油</div>
+          </div>
+          <div class="col-right">
+            <div class="price-large" id="viewPrice2">9650元</div>
+            <div class="ship-tag">船单</div>
+          </div>
+        </div>
+
+        <!-- 第 3 行 -->
+        <div class="table-row">
+          <div class="col-left">
+            <div class="oil-title-normal">德桥92号汽油</div>
+          </div>
+          <div class="col-right">
+            <div class="price-large" id="viewPrice3">10070/吨</div>
+            <div class="ship-tag">船单</div>
+          </div>
+        </div>
+
+        <!-- 第 4 行 -->
+        <div class="table-row">
+          <div class="col-left">
+            <div class="oil-title-normal">德桥95号汽油</div>
+          </div>
+          <div class="col-right">
+            <div class="price-large" id="viewPrice4">10170/吨</div>
+            <div class="ship-tag">船单</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部条款卡 -->
+      <div class="terms-card">
+        <div class="terms-header">—— 交易条款 ——</div>
+        <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
+        <div class="terms-contact" id="viewContact">联系人: 曹先生 13611945990</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 输出图片弹窗（供长按保存） -->
+  <div id="previewModal">
+    <img id="exportImg" src="" alt="海报生成结果">
+    <div class="modal-tip">💡 长按上方图片即可「保存到手机相册」或转发</div>
+    <button class="btn-close-modal" onclick="closeModal()">关闭</button>
+  </div>
+
+  <script>
+    // 1. 本地自定义替换背景
+    document.getElementById('bgUploader').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          document.getElementById('posterCanvas').style.backgroundImage = `url(${evt.target.result})`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 2. 双向文字同步
+    const linkInput = (iptId, viewId, isHtml = false) => {
+      document.getElementById(iptId).addEventListener('input', function(e) {
+        let val = e.target.value;
+        if (isHtml) {
+          document.getElementById(viewId).innerHTML = val.replace(/\\n/g, '<br>');
+        } else {
+          document.getElementById(viewId).innerText = val;
+        }
+      });
+    };
+    linkInput('iptTitle', 'viewTitle');
+    linkInput('iptCompany', 'viewCompany');
+    linkInput('iptName1', 'viewName1', true);
+    linkInput('iptPrice1', 'viewPrice1');
+    linkInput('iptNote1', 'viewNote1');
+    linkInput('iptPrice2', 'viewPrice2');
+    linkInput('iptPrice3', 'viewPrice3');
+    linkInput('iptPrice4', 'viewPrice4');
+    linkInput('iptTerms', 'viewTerms');
+    linkInput('iptContact', 'viewContact');
+
+    // 3. 高清导出图片（3倍超采样保证绝对清晰）
+    function exportPoster() {
+      const target = document.getElementById('posterCanvas');
+      html2canvas(target, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null
+      }).then(canvas => {
+        document.getElementById('exportImg').src = canvas.toDataURL('image/png');
+        document.getElementById('previewModal').style.display = 'flex';
+      }).catch(err => {
+        alert('导出失败，请重试');
+        console.error(err);
+      });
+    }
+
+    function closeModal() {
+      document.getElementById('previewModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
