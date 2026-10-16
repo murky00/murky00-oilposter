@@ -433,5 +433,49 @@
       document.getElementById('previewModal').style.display = 'none';
     }
   </script>
+  <script>
+    let lastEtag = null;
+    let updateNotified = false;
+  
+    async function checkUpdate() {
+      // 如果已经提示过了，就不重复打扰
+      if (updateNotified) return;
+  
+      try {
+        // 发送极轻量的 HEAD 请求对比版本指纹
+        const res = await fetch(location.href, { method: 'HEAD', cache: 'no-store' });
+        const etag = res.headers.get('etag') || res.headers.get('last-modified');
+  
+        if (lastEtag && etag && lastEtag !== etag) {
+          updateNotified = true;
+          showUpdateBanner(); // 发现更新，展示温和提示
+        }
+        lastEtag = etag;
+      } catch (e) {}
+    }
+  
+    // 弹出一个不遮挡视线、不破坏表单的顶部提示条
+    function showUpdateBanner() {
+      const banner = document.createElement('div');
+      banner.style = `
+        position: fixed; top: 10px; right: 10px; z-index: 99999;
+        background: #fff3cd; color: #856404; border: 1px solid #ffeeba;
+        padding: 12px 18px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 14px; display: flex; align-items: center; gap: 10px;
+      `;
+      banner.innerHTML = `
+        <span>📢 <b>页面有新版本</b>（如已填写内容，请提交后再刷新）</span>
+        <button onclick="location.reload()" style="background:#ffc107;border:none;padding:4px 10px;border-radius:4px;cursor:pointer;font-weight:bold;">立即刷新</button>
+        <button onclick="this.parentElement.remove()" style="background:transparent;border:none;cursor:pointer;color:#856404;">✕</button>
+      `;
+      document.body.appendChild(banner);
+    }
+  
+    // 1. 每 2 分钟检查一次
+    setInterval(checkUpdate, 2 * 60 * 1000);
+    // 2. 用户切回网页时检查一次
+    document.addEventListener('visibilitychange', () => !document.hidden && checkUpdate());
+    checkUpdate();
+  </script>  
 </body>
 </html>
