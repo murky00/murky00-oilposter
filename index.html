@@ -44,18 +44,16 @@
       background-image: url('bg.jpg');
     }
 
-    /* 顶部标题区（对齐原图紧凑比例） */
+    /* 顶部标题区 */
     .poster-header { 
       text-align: center; 
       margin-top: 36px;
       margin-bottom: 10px;
     }
-
-    /* 🌟 大标题：璀璨发光白金色大字 */
     .main-title {
       font-size: 28px; 
       font-weight: 900; 
-      color: #ffffff; 
+      color: #F9FFF6; 
       letter-spacing: 2px;
       text-shadow: 
         0 0 6px #ffcc00, 
@@ -63,14 +61,12 @@
         0 0 25px rgba(255, 153, 0, 0.85),
         0 2px 4px rgba(0, 0, 0, 0.95);
     }
-
-    /* 🌟 副标题：黑金椭圆胶囊日期框 */
     .date-badge {
       display: inline-block; 
       margin-top: 6px;
       background: #1f0b06;
       border: 1.5px solid #dca85b;
-      color: #ffffff; 
+      color: #F9FFF6; 
       font-size: 13px; 
       font-weight: 800;
       padding: 2px 18px; 
@@ -79,23 +75,25 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
-    /* 🌟 核心主卡片：极致双层金色镶边工艺 */
-    .price-card {
-      background: #ffffff;
-      border-radius: 18px;
-      border: 2.5px solid #b58133;
-      box-shadow: 
-        0 0 0 2px #ffffff inset,         /* 内嵌白色过渡 */
-        0 0 0 3.5px #dca85b inset,       /* 内嵌细金边 */
-        0 8px 24px rgba(0, 0, 0, 0.45);  /* 悬浮阴影 */
+    /* 🌟 核心主卡片：实体双层边框（彻底解决 html2canvas 错位穿透 BUG） */
+    .price-card-outer {
+      background: #e8bd70;               /* 外层金色底 */
+      border: 2px solid #a87226;          /* 最外层深金边框 */
+      border-radius: 20px;
+      padding: 3px;                      /* 稳定露出的 3px 金色夹层 */
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+    .price-card-inner {
+      background: #F9FFF6;               /* 内层纯白面板 */
+      border: 1.5px solid #b58133;        /* 内层精致细金线 */
+      border-radius: 16px;
       overflow: hidden;
-      padding: 4px;
     }
 
     /* 表格行布局 */
     .table-row {
       display: flex; align-items: center; min-height: 66px;
-      border-bottom: 1px solid #733c16; /* 深红褐色精致分割线 */
+      border-bottom: 1px solid #733c16;
     }
     .table-row:last-child { border-bottom: none; }
 
@@ -112,51 +110,39 @@
       position: relative; min-height: 66px;
     }
 
-    /* 第一行首推品类（深褐酒红超粗体） */
+    /* 字体与大号价格 */
     .text-red-primary { color: #561715; font-weight: 900; line-height: 1.22; }
     .oil-big-title { font-size: 20px; letter-spacing: 0.5px; }
     .oil-title-normal { font-size: 15px; font-weight: 900; color: #111111; letter-spacing: -0.2px; }
-    
-    /* 大号价格数字 */
     .price-large { font-size: 29px; font-weight: 900; color: #561715; letter-spacing: -0.8px; line-height: 1; }
-    
-    /* 辅助说明角标 */
     .sub-note { font-size: 11px; font-weight: 700; color: #222222; margin-top: 4px; }
     .ship-tag { position: absolute; right: 12px; bottom: 3px; font-size: 10px; color: #111111; font-weight: 800; }
 
-    /* 🌟 底部条款卡片（同样匹配双层金色镶边） */
-    .terms-card {
-      background: #ffffff; 
-      border-radius: 16px; 
-      padding: 12px 14px;
-      text-align: center; 
-      border: 2px solid #b58133;
-      box-shadow: 
-        0 0 0 1.5px #ffffff inset,
-        0 0 0 3px #dca85b inset,
-        0 6px 18px rgba(0, 0, 0, 0.35);
+    /* 🌟 底部条款卡片：同样使用实体双层边框 */
+    .terms-card-outer {
+      background: #e8bd70;
+      border: 2px solid #a87226;
+      border-radius: 16px;
+      padding: 3px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
       margin-top: 12px;
       margin-bottom: 6px;
     }
+    .terms-card-inner {
+      background: #F9FFF6;
+      border: 1.5px solid #b58133;
+      border-radius: 12px;
+      padding: 10px 14px;
+      text-align: center;
+    }
     .terms-header {
-      font-size: 14px; 
-      font-weight: 900; 
-      color: #111111; 
-      letter-spacing: 2px; 
-      margin-bottom: 5px;
+      font-size: 14px; font-weight: 900; color: #111111; letter-spacing: 2px; margin-bottom: 5px;
     }
     .terms-content { 
-      font-size: 12.5px; 
-      color: #111111; 
-      line-height: 1.5; 
-      font-weight: 800; 
+      font-size: 12.5px; color: #111111; line-height: 1.5; font-weight: 800; 
     }
     .terms-contact { 
-      font-size: 15px; 
-      font-weight: 900; 
-      color: #111111; 
-      margin-top: 6px; 
-      letter-spacing: 0.5px;
+      font-size: 15px; font-weight: 900; color: #111111; margin-top: 6px; letter-spacing: 0.5px;
     }
 
     /* 弹出图片预览遮罩 */
@@ -239,58 +225,62 @@
         </div>
       </div>
 
-      <!-- 核心金色双边框主卡片 -->
-      <div class="price-card">
-        <!-- 第 1 行 -->
-        <div class="table-row">
-          <div class="col-left text-red-primary">
-            <div class="oil-big-title" id="viewName1">南通炜盛库<br>0号柴油</div>
+      <!-- 核心金色双层实体主卡片 -->
+      <div class="price-card-outer">
+        <div class="price-card-inner">
+          <!-- 第 1 行 -->
+          <div class="table-row">
+            <div class="col-left text-red-primary">
+              <div class="oil-big-title" id="viewName1">南通炜盛库<br>0号柴油</div>
+            </div>
+            <div class="col-right">
+              <div class="price-large" id="viewPrice1" style="font-size:31px;">面议</div>
+              <div class="sub-note" id="viewNote1">泰炼小密度0.816</div>
+            </div>
           </div>
-          <div class="col-right">
-            <div class="price-large" id="viewPrice1" style="font-size:31px;">面议</div>
-            <div class="sub-note" id="viewNote1">泰炼小密度0.816</div>
-          </div>
-        </div>
 
-        <!-- 第 2 行 -->
-        <div class="table-row">
-          <div class="col-left">
-            <div class="oil-title-normal">南通炜盛库-10号柴油</div>
+          <!-- 第 2 行 -->
+          <div class="table-row">
+            <div class="col-left">
+              <div class="oil-title-normal">南通炜盛库-10号柴油</div>
+            </div>
+            <div class="col-right">
+              <div class="price-large" id="viewPrice2">9600元</div>
+              <div class="ship-tag">船单</div>
+            </div>
           </div>
-          <div class="col-right">
-            <div class="price-large" id="viewPrice2">9600元</div>
-            <div class="ship-tag">船单</div>
-          </div>
-        </div>
 
-        <!-- 第 3 行 -->
-        <div class="table-row">
-          <div class="col-left">
-            <div class="oil-title-normal">德桥92号汽油</div>
+          <!-- 第 3 行 -->
+          <div class="table-row">
+            <div class="col-left">
+              <div class="oil-title-normal">德桥92号汽油</div>
+            </div>
+            <div class="col-right">
+              <div class="price-large" id="viewPrice3">10150/吨</div>
+              <div class="ship-tag">船单</div>
+            </div>
           </div>
-          <div class="col-right">
-            <div class="price-large" id="viewPrice3">10150/吨</div>
-            <div class="ship-tag">船单</div>
-          </div>
-        </div>
 
-        <!-- 第 4 行 -->
-        <div class="table-row">
-          <div class="col-left">
-            <div class="oil-title-normal">德桥95号汽油</div>
-          </div>
-          <div class="col-right">
-            <div class="price-large" id="viewPrice4">10250/吨</div>
-            <div class="ship-tag">船单</div>
+          <!-- 第 4 行 -->
+          <div class="table-row">
+            <div class="col-left">
+              <div class="oil-title-normal">德桥95号汽油</div>
+            </div>
+            <div class="col-right">
+              <div class="price-large" id="viewPrice4">10250/吨</div>
+              <div class="ship-tag">船单</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 底部条款卡片 -->
-      <div class="terms-card">
-        <div class="terms-header">—— 交易条款 ——</div>
-        <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
-        <div class="terms-contact" id="viewContact">联系人: 曹先生 13611945990</div>
+      <!-- 底部条款卡片（实体双层框） -->
+      <div class="terms-card-outer">
+        <div class="terms-card-inner">
+          <div class="terms-header">—— 交易条款 ——</div>
+          <div class="terms-content" id="viewTerms">以上报价船单可以平仓，可以送到</div>
+          <div class="terms-contact" id="viewContact">联系人: 曹先生 13611945990</div>
+        </div>
       </div>
 
     </div>
@@ -338,7 +328,7 @@
     linkInput('iptTerms', 'viewTerms');
     linkInput('iptContact', 'viewContact');
 
-    // 3. 高清导出图片（3倍超采样保证绝对清晰）
+    // 3. 高清导出图片（3倍超采样保证绝对清晰，零边框Bug）
     function exportPoster() {
       const target = document.getElementById('posterCanvas');
       html2canvas(target, {
